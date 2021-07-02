@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css' rel='stylesheet'
+        integrity='sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x' crossorigin='anonymous'>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+    </style>
+    <title>Who's That Pokemon?!</title>
+</head>
+
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg d-flex a sb">
+            {% if 'uuid' not in session %}
+                <a class="navbar-brand" href="/login">Log In To Friend Your Pokemon!</a>
+            {% else %}
+                <a class="navbar-brand" href="/login">Future Pokemon Master: {{ session['first_name'] }}</a>
+            {% endif %}
+        </nav>
+        <div class="row d-flex a">
+            <div class="col-4 col info">
+                <div class="trans f">
+                    <h1 class="fourt">How to Play:</h1>
+                    <ul class="ten how">
+                        <li>Input Pokedex starting and ending entry, try 1 -151!</li>
+                        <li>Press "A" to generate random Pokemon from selected range, hopefully it's a shiny one!</li>
+                        <li>Guess the Pokemon and input it's name into the text box, press "A" when ready to guess!</li>
+                        <li>Catch em all!</li>
+                        <li>Press B to Reset...</li>
+                    </ul>
+                </div>
+                <div class='trans f r se'>
+                    <h6>Your Rivals can't wait to meet you...</h5>
+                    <h5>Log-in to crush their dreams</h5>
+                </div>
+            </div>
+            <div class="col-4 gameboy">
+                <div class="body">
+                    <div class="screen-box">
+                        <div id="game">
+                            <div class="log">
+                                <form action="/user/register", method = "post">
+                                <form id="register" onsubmit="event.preventDefault(); registerUser(this);">
+                                    <input type="text" name="first_name" placeholder="First Name">
+                                    <input type="text" name="last_name" placeholder="Last Name">
+                                    <input type="email" name="email" placeholder="E-mail">
+                                    <input type="password" name="password" placeholder="Password">
+                                    <input type="password" name="confirm_password" placeholder="Confirm">
+                                    <button>Register</button>
+                                </form>
+                            </div>
+                            <div class="log">
+                                <h4 class='fourt f'>Sign Up to Catch em All!</h4>
+                                <form action="/user/login", method = 'post'>
+                                    <input type="email" name="email" placeholder="E-mail">
+                                    <input type="password" name="password" placeholder="Password">
+                                    <button>Login</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="nintendo-logo-body">Nintendo</div>
+                        <div class="button-box">
+                            <div class="arrow-group">
+                                <div class="up-box">
+                                    <span class="arrow up"></span>
+                                </div>
+                                <div class="right-box">
+                                    <span class="arrow right"></span>
+                                </div>
+                                <div class="down-box">
+                                    <span class="arrow down"></span>
+                                </div>
+                                <div class="center-box">
+                                    <span class="dent"><span class="dent-highlight"></span></span>
+                                </div>
+                                <div class="left-box">
+                                    <span class="arrow left"></span>
+                                </div>
+                            </div>
+                                <button class="ab-button a" id="a"><span class= "button-text-height">A</span></button>
+                            <div class="ab-button b">
+                                <span class="button-text-height m"><a href="/reset">B</a></span>
+                            </div>
+                        </div>
+                    <div class="pills">
+                        <div class="pill-button button-select">
+                            <label class="select">SELECT</label>
+                        </div>
+                        <div class="pill-button button-start" onclick="randPoke()">
+                            <label class="start">START</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 trans last f">
+                <h2>Ready to Catch Some Pokemon?</h2>
+                <div>
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <p class='btn btn-danger'>{{message}}</p>
+                            {% endfor %}
+                        {% else %}
+                            <p>Let's get a rare one!</p>
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                <div>
+                    <h5 class='text-danger'>Welcome Trainer!</h4>
+                    <h6>The "SAVE SCORE," "Friend," "View," and "Free" buttons perform your action and start a new game. Be sure that's what you want to do!</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+<script src="../static/js/script.js"></script>
+<script>startPoke({{ session['start'] }}, {{ session['end'] }})</script>
+
+</html>
